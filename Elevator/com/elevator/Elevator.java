@@ -26,7 +26,7 @@ public class Elevator {
         this.elevatorAlgorithm = elevatorAlgorithm;
     }
 
-    void addExternalRequest(ExternalRequest externalRequest) {
+    public void addExternalRequest(ExternalRequest externalRequest) {
         handleRequestAdd(externalRequest.initializerFloor);
     }
 
