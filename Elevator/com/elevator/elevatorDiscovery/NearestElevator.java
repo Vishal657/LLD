@@ -5,10 +5,7 @@ import com.elevator.Elevator;
 import com.elevator.ElevatorState;
 import com.elevator.requests.ExternalRequest;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class NearestElevator implements ElevatorDiscovery {
 
@@ -22,7 +19,7 @@ public class NearestElevator implements ElevatorDiscovery {
     public void assignRequestToElevator(ExternalRequest externalRequest) {
         Elevator nearestElevator = findNearestElevator(externalRequest.initializerFloor, externalRequest.direction);
         if (nearestElevator != null) {
-            System.out.println("Request assigned to elevator id: " + nearestElevator.id);
+            System.out.println("Request: " + externalRequest.initializerFloor + " assigned to elevator id: " + nearestElevator.id);
             nearestElevator.addExternalRequest(externalRequest);
         }
     }

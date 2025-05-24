@@ -7,18 +7,24 @@ import com.elevator.requests.ExternalRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ElevatorManagementSystem {
     private List<Elevator> elevators;
-    int totalFloors;
-    ElevatorDiscovery elevatorDiscovery;
+    private int totalFloors;
+    private ElevatorDiscovery elevatorDiscovery;
+    private ExecutorService executor;
 
     public ElevatorManagementSystem(int numberOfElevators, int totalFloors) {
         elevators = new ArrayList<>();
         this.totalFloors = totalFloors;
+        this.executor = Executors.newFixedThreadPool(numberOfElevators);
 
         for (int i = 0; i < numberOfElevators; i++) {
-            elevators.add(new Elevator(totalFloors, i + 1, new SCANAlgorithm(), i));
+            Elevator elevator = new Elevator(totalFloors, i + 1, new SCANAlgorithm(), i);
+            elevators.add(elevator);
+            executor.execute(elevator); // Start elevator thread
         }
 
         this.elevatorDiscovery = new NearestElevator(elevators);
@@ -28,4 +34,11 @@ public class ElevatorManagementSystem {
         elevatorDiscovery.assignRequestToElevator(externalRequest);
     }
 
+    public void shutdown() {
+        executor.shutdownNow(); // Graceful shutdown
+    }
+
+    public List<Elevator> getAllElevators() {
+        return elevators;
+    }
 }
