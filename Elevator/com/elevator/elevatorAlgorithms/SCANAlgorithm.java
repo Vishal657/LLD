@@ -14,12 +14,16 @@ public class SCANAlgorithm implements ElevatorAlgorithm{
     Stack<Integer> pendingRequests;
     Elevator elevator;
 
-    public SCANAlgorithm(Elevator elevator) {
-        this.elevator = elevator;
+    public SCANAlgorithm() {
         this.minQueue = new PriorityQueue<>();
         this.maxQueue = new PriorityQueue<>((a, b) -> b - a);
         this.pendingRequests = new Stack<>();
     };
+
+    @Override
+    public void setElevator(Elevator elevator) {
+        this.elevator = elevator;
+    }
 
     public void addRequest(int floor) {
         if (elevator.currentFloor > floor && elevator.movingDirection == Direction.UP
@@ -33,6 +37,12 @@ public class SCANAlgorithm implements ElevatorAlgorithm{
         fullFillRequests();
     }
 
+    private void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (Exception e) {}
+    }
+
     public void fullFillRequests() {
         while (!minQueue.isEmpty() || !maxQueue.isEmpty() || !pendingRequests.isEmpty()) {
             if(elevator.elevatorState == ElevatorState.IDLE) {
@@ -41,7 +51,8 @@ public class SCANAlgorithm implements ElevatorAlgorithm{
             }
             while (elevator.movingDirection == Direction.UP && !minQueue.isEmpty()) {
                 elevator.elevatorState = ElevatorState.IDLE;
-                System.out.println("Full filling request of floor: " + minQueue.poll());
+                sleep(500);
+                System.out.println("Full filling request of floor: " + minQueue.poll() + " by elevator Id: " + elevator.id + " Direction: UP");
                 elevator.elevatorState = ElevatorState.MOVING;
             }
             if (!pendingRequests.isEmpty()) {
@@ -50,7 +61,8 @@ public class SCANAlgorithm implements ElevatorAlgorithm{
             }
             while (elevator.movingDirection == Direction.DOWN && !maxQueue.isEmpty()) {
                 elevator.elevatorState = ElevatorState.IDLE;
-                System.out.println("Full filling request of floor: " + maxQueue.poll());
+                sleep(500);
+                System.out.println("Full filling request of floor: " + minQueue.poll() + " by elevator Id: " + elevator.id + " Direction: DOWN");
                 elevator.elevatorState = ElevatorState.MOVING;
             }
             if (!pendingRequests.isEmpty()) {

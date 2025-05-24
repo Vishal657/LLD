@@ -13,24 +13,24 @@ public class Elevator {
     public Direction movingDirection;      // set to null if not moving
     public ElevatorState elevatorState;
     public ElevatorAlgorithm elevatorAlgorithm;
+    public int id;
 
-//    public Set<InternalRequest> internalRequests;
-//    public Set<ExternalRequest> externalRequests;
-
-    public Elevator(int totalFloors, int currentFloor, ElevatorAlgorithm elevatorAlgorithm) {
+    public Elevator(int totalFloors, int currentFloor, ElevatorAlgorithm elevatorAlgorithm, int id) {
         this.currentFloor = currentFloor;
         this.totalFloors = totalFloors;
         this.movingDirection = null;
         this.elevatorState = ElevatorState.IDLE;
 
         this.elevatorAlgorithm = elevatorAlgorithm;
+        elevatorAlgorithm.setElevator(this);
+        this.id = id;
     }
 
     public void addExternalRequest(ExternalRequest externalRequest) {
         handleRequestAdd(externalRequest.initializerFloor);
     }
 
-    void addInternalRequest(InternalRequest internalRequest) {
+    public void addInternalRequest(InternalRequest internalRequest) {
         handleRequestAdd(internalRequest.destinationFloor);
     }
 

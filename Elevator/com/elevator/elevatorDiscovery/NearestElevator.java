@@ -19,13 +19,14 @@ public class NearestElevator implements ElevatorDiscovery {
     }
 
     @Override
-    public void findElevator(ExternalRequest externalRequest) {
+    public void assignRequestToElevator(ExternalRequest externalRequest) {
         Elevator nearestElevator = findNearestElevator(externalRequest.initializerFloor, externalRequest.direction);
         if (nearestElevator != null) {
+            System.out.println("Request assigned to elevator id: " + nearestElevator.id);
             nearestElevator.addExternalRequest(externalRequest);
         }
     }
-    
+
     public Elevator findNearestElevator(int requestFloor, Direction direction) {
         Elevator nearestElevator = null;
         int minDistance = Integer.MAX_VALUE;

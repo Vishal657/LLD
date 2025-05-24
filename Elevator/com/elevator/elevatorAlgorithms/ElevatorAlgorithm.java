@@ -4,8 +4,9 @@ import com.elevator.Elevator;
 
 public interface ElevatorAlgorithm {
 
-    public void addRequest(int floor);
+    void addRequest(int floor);
 
-    public void fullFillRequests();
+    void fullFillRequests();
 
+    void setElevator(Elevator elevator);
 }

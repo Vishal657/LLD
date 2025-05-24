@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ElevatorDiscovery {
 
-    void findElevator(ExternalRequest externalRequest);
+    void assignRequestToElevator(ExternalRequest externalRequest);
 
 }
