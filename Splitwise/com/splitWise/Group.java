@@ -8,7 +8,7 @@ public class Group {
 
     private String groupId;
     List<User> users;
-    Map<User, List<Expense>> userExpenses;
+    public Map<User, List<Expense>> userExpenses;
     SplitExpense splitExpense;
 
     private List<Contributions> contributionTransections;
@@ -56,7 +56,7 @@ public class Group {
     }
 
     public List<Expense> getUserExpenses(User user) {
-        return userExpenses.get(user);
+        return userExpenses.getOrDefault(user, new ArrayList<>());
     }
 
     public List<Expense> getUserReceivables(User user) {
@@ -73,7 +73,15 @@ public class Group {
         return receivables;
     }
 
-    public synchronized void sattleExpense(Expense expense) {
+    public void removeExpense(Expense expense) {
+        List<Expense> borrowerExpenses = userExpenses.get(expense.borrower);
+        if (borrowerExpenses != null) {
+            List<Expense> newBorrowerExpenses = borrowerExpenses.stream().filter((ex) -> ex.equals(expense)).toList();
+            userExpenses.put(expense.borrower, newBorrowerExpenses);
+        }
+    }
+
+    public synchronized void settleExpense(Expense expense) {
         List<Expense> borrowerExpenses = userExpenses.get(expense.borrower);
         if (borrowerExpenses != null) {
             List<Expense> newBorrowerExpenses = borrowerExpenses.stream().filter((ex) -> ex.equals(expense)).toList();

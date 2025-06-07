@@ -5,12 +5,16 @@ import java.util.UUID;
 public class Expense {
 
     private String expenseId;
-    User borrower;
-    User lender;
-    double amount;
+    public User borrower;
+    public User lender;
+    public double amount;
 
-    Expense(User borrower, User lender, double amount) {
+    public Expense(User borrower, User lender, double amount) {
         expenseId = UUID.randomUUID().toString();
+
+        this.borrower = borrower;
+        this.lender = lender;
+        this.amount = amount;
     }
 
     @Override
@@ -25,4 +29,11 @@ public class Expense {
         Expense other = (Expense) obj;
         return expenseId.equals(other.expenseId);
     }
+
+    @Override
+    public String toString() {
+        return String.format("Expense[id=%s, borrower=%s, lender=%s, amount=%.2f]",
+                expenseId, borrower.getName(), lender.getName(), amount);
+    }
+
 }
